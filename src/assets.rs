@@ -1,6 +1,6 @@
 //! Provides the Asset management system for this game
 
-use bevy::asset::{LoadState, LoadedAsset};
+use bevy::asset::LoadState;
 use bevy::prelude::*;
 
 use crate::states::MainState;
@@ -25,14 +25,16 @@ pub fn check_asset_loading(
     mut next_state: ResMut<NextState<MainState>>,
 ) {
     info!("HERE");
+    let mut finished = true;
 
     for handle in &asset_list.0 {
-        match asset_server.get_load_state(handle) {
-            x => {
-                dbg!(x);
-            }
+        if !matches!(asset_server.get_load_state(handle), Some(LoadState::Loaded)) {
+            finished = false;
+            break;
         }
     }
 
-    next_state.set(MainState::Game);
+    if finished {
+        next_state.set(MainState::Game);
+    }
 }

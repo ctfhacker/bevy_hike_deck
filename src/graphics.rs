@@ -1,13 +1,12 @@
 use bevy::prelude::*;
-use bevy::render::texture::ImageSampler;
 
 use crate::assets::AssetList;
 use crate::game::{Position, Tile};
 use crate::globals::TILE_SIZE;
 
-pub struct GraphicsPlugin;
+pub struct Plugin;
 
-impl Plugin for GraphicsPlugin {
+impl bevy::prelude::Plugin for Plugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Startup, load_assets)
             .add_systems(Update, spawn_tile_renderer);
@@ -26,7 +25,7 @@ pub fn load_assets(
     mut texture_atlas_layouts: ResMut<Assets<TextureAtlasLayout>>,
     mut asset_list: ResMut<AssetList>,
 ) {
-    let mut texture = asset_server.load("ascii.png");
+    let texture = asset_server.load("ascii.png");
     asset_list.0.push(texture.clone().untyped());
 
     let layout = TextureAtlasLayout::from_grid(UVec2::splat(10), 16, 16, None, None);

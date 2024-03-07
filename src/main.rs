@@ -1,7 +1,5 @@
 use bevy::prelude::*;
 
-use rand::{seq::SliceRandom, thread_rng, Rng};
-
 mod assets;
 mod game;
 mod globals;
@@ -39,6 +37,6 @@ fn main() {
         .add_systems(Startup, setup_camera)
         .add_plugins(game::BoardPlugin)
         .add_plugins(assets::AssetPlugin)
-        .add_plugins(graphics::GraphicsPlugin)
+        .add_plugins(graphics::Plugin)
         .run();
 }
