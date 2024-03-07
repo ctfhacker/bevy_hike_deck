@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 
 use crate::game::Position;
-use crate::piece::Piece;
+use crate::piece::{Actor, Piece};
 use crate::states::MainState;
 
 pub struct Plugin;
@@ -16,5 +16,10 @@ impl bevy::prelude::Plugin for Plugin {
 pub struct Player;
 
 fn spawn_player(mut commands: Commands) {
-    commands.spawn((Player, Piece::Player, Position { x: 0, y: 0 }));
+    commands.spawn((
+        Actor::default(),
+        Player,
+        Piece::Player,
+        Position { x: 0, y: 0 },
+    ));
 }

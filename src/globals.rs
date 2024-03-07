@@ -12,4 +12,4 @@ pub const PIECE_Z: f32 = 2.0;
 pub const MIN_DISTANCE: f32 = 1.0;
 
 /// The speed of a piece
-pub const PIECE_SPEED: f32 = 5.0;
+pub const PIECE_SPEED: f32 = 15.0;

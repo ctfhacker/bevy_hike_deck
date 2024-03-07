@@ -6,5 +6,13 @@ use bevy::prelude::*;
 pub enum MainState {
     #[default]
     LoadAssets,
-    Game
+    Game,
+}
+
+#[derive(Clone, Debug, Default, Hash, Eq, States, PartialEq)]
+pub enum GameState {
+    #[default]
+    None,
+    WaitingForInput,
+    TurnUpdate,
 }

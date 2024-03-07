@@ -67,8 +67,6 @@ pub fn spawn_map(mut commands: Commands, mut board: ResMut<Board>) {
         for y in 0..8 {
             let pos = Position { x, y };
             let tile_id = commands.spawn((pos, Tile)).id();
-
-            dbg!(tile_id);
             board.tiles.insert(pos, tile_id);
         }
     }
