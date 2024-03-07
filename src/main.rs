@@ -4,6 +4,9 @@ mod assets;
 mod game;
 mod globals;
 mod graphics;
+mod input;
+mod piece;
+mod player;
 mod states;
 
 fn setup_camera(mut commands: Commands) {
@@ -36,7 +39,9 @@ fn main() {
         .init_state::<states::MainState>()
         .add_systems(Startup, setup_camera)
         .add_plugins(game::BoardPlugin)
-        .add_plugins(assets::AssetPlugin)
+        .add_plugins(assets::Plugin)
         .add_plugins(graphics::Plugin)
+        .add_plugins(player::Plugin)
+        .add_plugins(input::Plugin)
         .run();
 }

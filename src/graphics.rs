@@ -2,14 +2,17 @@ use bevy::prelude::*;
 
 use crate::assets::AssetList;
 use crate::game::{Position, Tile};
-use crate::globals::TILE_SIZE;
+use crate::globals::{MIN_DISTANCE, PIECE_SPEED, TILE_SIZE, TILE_Z};
+use crate::piece::Piece;
 
 pub struct Plugin;
 
 impl bevy::prelude::Plugin for Plugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Startup, load_assets)
-            .add_systems(Update, spawn_tile_renderer);
+            .add_systems(Update, spawn_tile_renderer)
+            .add_systems(Update, spawn_piece_renderer)
+            .add_systems(Update, update_piece_position);
     }
 }
 
@@ -45,7 +48,7 @@ pub fn spawn_tile_renderer(
         let position = Transform::from_translation(Vec3::new(
             TILE_SIZE * position.x as f32,
             TILE_SIZE * position.y as f32,
-            0.0,
+            TILE_Z,
         ));
 
         commands.entity(entity).insert(SpriteSheetBundle {
@@ -62,5 +65,52 @@ pub fn spawn_tile_renderer(
             transform: position,
             ..default()
         });
+    }
+}
+
+pub fn spawn_piece_renderer(
+    mut commands: Commands,
+    query: Query<(Entity, &Position, &Piece), Added<Piece>>,
+    assets: Res<GraphicsAssets>,
+) {
+    for (entity, position, piece) in query.iter() {
+        let sprite_index = match piece {
+            Piece::Player => 1,
+        };
+
+        let position = position.to_world();
+
+        commands.entity(entity).insert(SpriteSheetBundle {
+            sprite: Sprite {
+                color: LegacyColor::WHITE,
+                custom_size: Some(Vec2::splat(TILE_SIZE)),
+                ..default()
+            },
+            texture: assets.sprite_textures.clone(),
+            atlas: TextureAtlas {
+                layout: assets.layout.clone(),
+                index: sprite_index,
+            },
+            transform: Transform::from_translation(position),
+            ..default()
+        });
+    }
+}
+
+pub fn update_piece_position(
+    mut query: Query<(&Position, &mut Transform), With<Piece>>,
+    time: Res<Time>,
+) {
+    for (position, mut transform) in query.iter_mut() {
+        let target_pos = position.to_world();
+
+        let distance = (target_pos - transform.translation).length();
+        if distance > MIN_DISTANCE {
+            transform.translation = transform
+                .translation
+                .lerp(target_pos, PIECE_SPEED * time.delta_seconds());
+        } else {
+            transform.translation = target_pos;
+        }
     }
 }

@@ -5,9 +5,9 @@ use bevy::prelude::*;
 
 use crate::states::MainState;
 
-pub struct AssetPlugin;
+pub struct Plugin;
 
-impl Plugin for AssetPlugin {
+impl bevy::prelude::Plugin for Plugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<AssetList>().add_systems(
             Update,
