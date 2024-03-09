@@ -80,6 +80,7 @@ pub fn spawn_piece_renderer(
     for (entity, position, piece) in query.iter() {
         let sprite_index = match piece {
             Piece::Player => 1,
+            Piece::Npc => 63,
         };
 
         let position = position.to_world();

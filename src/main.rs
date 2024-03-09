@@ -9,8 +9,10 @@ mod globals;
 mod graphics;
 mod input;
 mod manager;
+mod npcs;
 mod piece;
 mod player;
+mod prelude;
 mod states;
 
 fn setup_camera(mut commands: Commands) {
@@ -54,5 +56,6 @@ fn main() {
         .add_plugins(input::Plugin)
         .add_plugins(actions::Plugin)
         .add_plugins(manager::Plugin)
+        .add_plugins(npcs::Plugin)
         .run();
 }

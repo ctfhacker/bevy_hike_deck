@@ -5,6 +5,7 @@ use crate::actions::Action;
 #[derive(Component)]
 pub enum Piece {
     Player,
+    Npc,
 }
 
 #[derive(Component, Default)]
