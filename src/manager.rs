@@ -29,6 +29,7 @@ fn game_start(mut next_state: ResMut<NextState<GameState>>) {
 }
 
 fn game_end(mut next_state: ResMut<NextState<GameState>>) {
+    info!("GAME END!");
     next_state.set(GameState::None);
 }
 
@@ -47,7 +48,7 @@ fn turn_update_start(
 }
 
 fn turn_update_end(mut next_state: ResMut<NextState<GameState>>) {
-    next_state.set(GameState::None);
+    next_state.set(GameState::WaitingForInput);
 }
 
 fn turn_update_cancel(mut next_state: ResMut<NextState<GameState>>) {

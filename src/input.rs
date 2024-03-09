@@ -1,24 +1,16 @@
+use crate::prelude::*;
 use bevy::prelude::*;
 
 use std::collections::VecDeque;
-
-use crate::actions::{ActorQueue, WalkAction};
-use crate::game::Position;
-use crate::piece::Actor;
-use crate::player::Player;
 
 pub struct Plugin;
 
 impl bevy::prelude::Plugin for Plugin {
     fn build(&self, app: &mut App) {
-        /*
         app.add_event::<PlayerInputReadyEvent>().add_systems(
             Update,
             player_position.run_if(in_state(GameState::WaitingForInput)),
         );
-        */
-        app.add_event::<PlayerInputReadyEvent>()
-            .add_systems(Update, player_position);
     }
 }
 
@@ -37,6 +29,7 @@ fn player_position(
     mut player_query: Query<(Entity, &Position, &mut Actor), With<Player>>,
     mut queue: ResMut<ActorQueue>,
     mut event_input: EventWriter<PlayerInputReadyEvent>,
+    time: Res<Time>,
 ) {
     let Ok((entity, position, mut actor)) = player_query.get_single_mut() else {
         return;
@@ -54,7 +47,12 @@ fn player_position(
 
         // Add this moved actor to the action queue
         actor.0 = Some(Box::new(action));
-        queue.0 = VecDeque::from([entity]);
+
+        assert!(queue.0.is_empty());
+
+        queue.0.clear();
+        queue.0.push_front(entity);
+
         event_input.send(PlayerInputReadyEvent);
     }
 }

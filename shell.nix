@@ -31,6 +31,8 @@ pkgs.mkShell rec {
     xorg.libXcursor 
     xorg.libXi 
     xorg.libXrandr # To use the x11 feature
+
+    graphviz # For rendering flow
   ];
 
   LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath buildInputs;

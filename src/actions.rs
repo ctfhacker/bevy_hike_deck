@@ -61,7 +61,7 @@ pub fn process_action_queue(world: &mut World) {
         return;
     };
 
-    let successful_action = !action.execute(world);
+    let successful_action = action.execute(world);
     let is_player = world.get::<Player>(entity).is_some();
 
     // If the entity performing an Action is the Player and the action failed, send an InvalidPlayerActionEvent
